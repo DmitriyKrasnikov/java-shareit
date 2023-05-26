@@ -1,11 +1,9 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.item.model.dto;
 
 import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -14,12 +12,8 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Item {
-    @Min(1)
+public class ItemDto {
     Long id;
-    @Min(1)
-    Long userId;
     @NotBlank
     String name;
     @NotBlank
