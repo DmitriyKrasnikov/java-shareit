@@ -4,27 +4,28 @@ import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.Create;
+import ru.practicum.shareit.Update;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Item {
-    @Min(1)
+    @NotNull(groups = {Create.class})
+    @Min(groups = {Update.class}, value = 1L)
     Long id;
-    @Min(1)
+    @NotNull(groups = {Create.class})
+    @Min(groups = {Update.class}, value = 1L)
     Long userId;
-    @NotBlank
+    @NotBlank(groups = {Create.class})
     String name;
-    @NotBlank
+    @NotBlank(groups = {Create.class})
     String description;
     @BooleanFlag
-    @NotNull
+    @NotNull(groups = {Create.class})
     Boolean available;
 }

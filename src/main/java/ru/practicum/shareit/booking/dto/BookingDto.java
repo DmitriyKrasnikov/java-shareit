@@ -5,9 +5,6 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-/**
- * TODO Sprint add-bookings.
- */
 @Data
 @AllArgsConstructor
 public class BookingDto {

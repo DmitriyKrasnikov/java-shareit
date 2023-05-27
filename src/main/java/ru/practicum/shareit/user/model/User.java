@@ -3,27 +3,27 @@ package ru.practicum.shareit.user.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.Create;
+import ru.practicum.shareit.Update;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    @Min(1)
+    @NotNull(groups = {Create.class})
+    @Min(groups = {Update.class}, value = 1L)
     Long id;
-    @NotEmpty
-    @Email
+    @NotBlank(groups = {Create.class})
+    @Email(groups = {Create.class})
     String email;
-    @NotBlank
+    @NotBlank(groups = {Create.class})
     String name;
     HashSet<Long> items;
 

@@ -3,22 +3,20 @@ package ru.practicum.shareit.item.model.dto;
 import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.practicum.shareit.Create;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 @AllArgsConstructor
 public class ItemDto {
     Long id;
-    @NotBlank
+    @NotBlank(groups = Create.class)
     String name;
-    @NotBlank
+    @NotBlank(groups = Create.class)
     String description;
     @BooleanFlag
-    @NotNull
+    @NotNull(groups = Create.class)
     Boolean available;
 }
