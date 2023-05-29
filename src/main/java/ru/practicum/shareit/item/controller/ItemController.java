@@ -50,8 +50,7 @@ public class ItemController {
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public List<ItemDto> getItemByText(@RequestParam String text) {
-        List<ItemDto> list = itemService.getItemsByText(text);
-        return list;
+        return itemService.getItemsByText(text);
     }
 
 }
