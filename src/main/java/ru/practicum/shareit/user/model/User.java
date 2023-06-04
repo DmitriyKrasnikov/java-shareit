@@ -1,31 +1,31 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.user.model;
 
-import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.Create;
 import ru.practicum.shareit.Update;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Item {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class User {
     @NotNull(groups = {Create.class})
     @Min(groups = {Update.class}, value = 1L)
     Long id;
-    @NotNull(groups = {Create.class})
-    @Min(groups = {Update.class}, value = 1L)
-    Long userId;
+    @EqualsAndHashCode.Include
+    @NotBlank(groups = {Create.class})
+    @Email(groups = {Create.class})
+    String email;
     @NotBlank(groups = {Create.class})
     String name;
-    @NotBlank(groups = {Create.class})
-    String description;
-    @BooleanFlag
-    @NotNull(groups = {Create.class})
-    Boolean available;
+    HashSet<Long> items;
 }
