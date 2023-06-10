@@ -11,12 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl {
 
     private final HashMap<Long, User> users = new HashMap<>();
     private final IdCounter idCounter = new IdCounter();
 
-    @Override
     public User createEntity(User entity) {
         if (users.containsValue(entity)) {
             throw new ConflictException("Entity already exists");
@@ -26,7 +25,6 @@ public class UserRepositoryImpl implements UserRepository {
         return entity;
     }
 
-    @Override
     public User getEntity(long entityId) {
         if (!users.containsKey(entityId)) {
             throw new EntityNotFoundException("User with id" + entityId + " not found");
@@ -34,12 +32,10 @@ public class UserRepositoryImpl implements UserRepository {
         return users.get(entityId);
     }
 
-    @Override
     public List<User> getEntities() {
         return new ArrayList<>(users.values());
     }
 
-    @Override
     public User updateEntity(User entity, long entityId) {
         if (users.get(entityId) == null) {
             throw new EntityNotFoundException("User with id not found");
@@ -54,7 +50,6 @@ public class UserRepositoryImpl implements UserRepository {
         return entity;
     }
 
-    @Override
     public void deleteEntity(long entityId) {
         users.remove(entityId);
     }

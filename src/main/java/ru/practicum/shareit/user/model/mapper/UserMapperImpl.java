@@ -17,12 +17,12 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User mapFrom(UserDto entity) {
-        return new User(entity.getId(), entity.getEmail(), entity.getName(), new HashSet<>());
+        return new User(entity.getId(), entity.getEmail(), entity.getName());
     }
 
     @Override
     public User mapFrom(UserDto userDto, User user) {
-        User user1 = new User(user.getId(), user.getEmail(), user.getName(), user.getItems());
+        User user1 = new User(user.getId(), user.getEmail(), user.getName());
         if (userDto.getEmail() != null) {
             user1.setEmail(userDto.getEmail());
         }

@@ -6,7 +6,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.Create;
 import ru.practicum.shareit.Update;
+import ru.practicum.shareit.item.model.dto.CommentDto;
 import ru.practicum.shareit.item.model.dto.ItemDto;
+import ru.practicum.shareit.item.model.dto.ItemDtoWithBookings;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
@@ -20,6 +22,13 @@ public class ItemController {
     @Autowired
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
+    }
+
+    @PostMapping("{itemId}/comment")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto createComment (@RequestBody @Validated CommentDto commentDto, @RequestHeader("X-Sharer-User-Id") long userId,
+                                     @PathVariable long itemId) {
+        return itemService.createComment(commentDto, userId, itemId);
     }
 
     @PostMapping
@@ -37,8 +46,8 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto getItem(@PathVariable long itemId) {
-        return itemService.getItem(itemId);
+    public ItemDto getItem(@PathVariable long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
+        return itemService.getItem(itemId, userId);
     }
 
     @GetMapping
@@ -49,8 +58,7 @@ public class ItemController {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDto> getItemByText(@RequestParam String text) {
-        return itemService.getItemsByText(text);
+    public List<ItemDto> getItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") long userId) {
+        return itemService.getItemsByText(text, userId);
     }
-
 }

@@ -24,6 +24,13 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse badRequest(BadRequestException e) {
+        log.warn("Получен статус 400 BadRequest. Ошибка : {}", e.getMessage());
+        return new ErrorResponse(e.getMessage());
+    }
+
     private class ErrorResponse {
         String error;
 

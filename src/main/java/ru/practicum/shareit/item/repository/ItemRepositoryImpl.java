@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class ItemRepositoryImpl implements ItemRepository {
+public class ItemRepositoryImpl{
 
-    private final UserRepository userRepository;
+/*    private final UserRepository userRepository;
     private final HashMap<Long, Item> items = new HashMap<>();
     private final IdCounter idCounter = new IdCounter();
 
@@ -25,21 +25,18 @@ public class ItemRepositoryImpl implements ItemRepository {
         this.userRepository = userRepository;
     }
 
-    @Override
     public Item createEntity(Item entity) {
         if (items.containsValue(entity)) {
             throw new ConflictException("Entity already exists");
         }
-        if (userRepository.getEntity(entity.getUserId()) == null) {
+        if (userRepository.findById(entity.getUserId()) == null) {
             throw new EntityNotFoundException("User doesn't exist");
         }
         entity.setId(idCounter.generateId());
-        userRepository.getEntity(entity.getUserId()).getItems().add(entity.getId());
         items.put(entity.getId(), entity);
         return entity;
     }
 
-    @Override
     public Item getEntity(long entityId) {
         if (!items.containsKey(entityId)) {
             throw new EntityNotFoundException("Entity with" + entityId + " not found");
@@ -47,24 +44,22 @@ public class ItemRepositoryImpl implements ItemRepository {
         return items.get(entityId);
     }
 
-    @Override
     public List<Item> getEntities() {
         return new ArrayList<>(items.values());
     }
 
-    @Override
     public List<Item> getUserItems(long userId) {
-        return userRepository.getEntity(userId).getItems().stream().map(items::get).collect(Collectors.toList());
+        return new ArrayList<>();
+                //userRepository.findById(userId).getItems().stream().map(items::get).collect(Collectors.toList());
     }
 
-    @Override
     public Item updateEntity(Item item, long entityId) {
         if (items.get(entityId) == null) {
             throw new EntityNotFoundException("Item with id" + entityId + " not found");
         }
-        if (!userRepository.getEntity(item.getUserId()).getItems().contains(entityId)) {
-            throw new EntityNotFoundException("Item with id " + item.getId() + " does not belong to the user " + item.getUserId());
-        }
+      //  if (!userRepository.findById(item.getUserId()).getItems().contains(entityId)) {
+       //     throw new EntityNotFoundException("Item with id " + item.getId() + " does not belong to the user " + item.getUserId());
+       // }
         Item item1 = items.get(entityId);
         items.remove(entityId);
         if (items.containsValue(item)) {
@@ -75,7 +70,6 @@ public class ItemRepositoryImpl implements ItemRepository {
         return item;
     }
 
-    @Override
     public List<Item> getItemsByText(String text) {
         List<Item> foundItems = new ArrayList<>();
         if (!text.isBlank()) {
@@ -92,8 +86,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         return foundItems;
     }
 
-    @Override
     public void deleteEntity(long entityId) {
         items.remove(entityId);
-    }
+    }*/
 }
