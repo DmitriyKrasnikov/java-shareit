@@ -77,7 +77,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> getItemsByText(String text, long userId) {
         log.info("Get items by text {}", text);
-        return text.isBlank() ? new ArrayList<>() : itemRepository.ItemsByText(text.toUpperCase()).stream()
+        return text.isBlank() ? new ArrayList<>() : itemRepository.itemsByText(text.toUpperCase()).stream()
                 .map(item -> itemMapper.mapTo(item, userId))
                 .collect(Collectors.toList());
     }
