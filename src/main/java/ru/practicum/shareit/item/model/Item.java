@@ -4,8 +4,8 @@ import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.Create;
-import ru.practicum.shareit.Update;
+import ru.practicum.shareit.validateInterfaces.Create;
+import ru.practicum.shareit.validateInterfaces.Update;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
@@ -24,20 +24,20 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull(groups = {Create.class})
     @Min(groups = {Update.class}, value = 1L)
-    Long id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
     @NotBlank(groups = {Create.class})
     @Column(name = "name")
-    String name;
+    private String name;
     @NotBlank(groups = {Create.class})
     @Column(name = "description")
-    String description;
+    private String description;
     @BooleanFlag
     @NotNull(groups = {Create.class})
     @Column(name = "available")
-    Boolean available;
+    private Boolean available;
     @Transient
-    List<Comment> comments;
+    private List<Comment> comments;
 }

@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ItemServiceImpl implements ItemService {
-
     public final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
     private final CommentMapper commentMapper;
@@ -40,17 +39,19 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto createItem(ItemDto itemDto, long userId) {
         log.info("Create item");
         Item item = itemRepository.save(itemMapper.mapFrom(itemDto, userId));
-        return itemMapper.mapTo(item,userId);
+        return itemMapper.mapTo(item, userId);
     }
 
     @Override
     public ItemDto updateItem(ItemDto itemDto, long itemId, long userId) {
         log.info("Update item with id {}", itemId);
-        Item itemBefore = itemRepository.findById(itemId).orElseThrow(()->new EntityNotFoundException("Вещь с id "
-                + itemId + " не найдена"));
-        if(itemBefore.getUser().getId() != userId) {
-            throw new EntityNotFoundException("Вещь " + itemBefore.getName() + " не принадлежит пользователю с id" + userId);
+        Item itemBefore = itemRepository.findById(itemId).orElseThrow(() ->
+                new EntityNotFoundException("Вещь с id " + itemId + " не найдена"));
+
+        if (itemBefore.getUser().getId() != userId) {
+            throw new EntityNotFoundException("Вещь " + itemBefore.getName() + " не принадлежит пользователю " + userId);
         }
+
         Item item = itemMapper.mapFrom(itemDto, itemBefore);
         return itemMapper.mapTo(itemRepository.save(item), userId);
     }
@@ -58,33 +59,35 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto getItem(long itemId, long userId) {
         log.info("Get item with id {}", itemId);
-        return itemMapper.mapTo(itemRepository.findById(itemId).orElseThrow(()->new EntityNotFoundException("Text")), userId);
+        return itemMapper.mapTo(itemRepository.findById(itemId).orElseThrow(() ->
+                new EntityNotFoundException("Text")), userId);
     }
 
     @Override
     public List<ItemDto> getItems(long userId) {
         log.info("Get users items with userId {}", userId);
         List<Item> items = itemRepository.findAllByUserId(userId);
-
         return items.stream()
                 .map(item -> itemMapper.mapTo(item, userId))
                 .sorted(Comparator.comparing((ItemDto item) ->
-                        (item.getLastBooking() != null && item.getNextBooking() != null) ? 0 : 1))
+                (item.getLastBooking() != null && item.getNextBooking() != null) ? 0 : 1))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<ItemDto> getItemsByText(String text, long userId) {
         log.info("Get items by text {}", text);
-        if(text.isBlank()){return new ArrayList<>();}
-        return itemRepository.ItemsByText(text.toUpperCase()).stream().map(item -> itemMapper.mapTo(item,userId)).collect(Collectors.toList());
+        return text.isBlank() ? new ArrayList<>() : itemRepository.ItemsByText(text.toUpperCase()).stream()
+                .map(item -> itemMapper.mapTo(item, userId))
+                .collect(Collectors.toList());
     }
 
     @Override
     public CommentDto createComment(CommentDto commentDto, long userId, long itemId) {
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityNotFoundException("Item with id " + itemId + " not found"));
+        log.info("Create comment {}", commentDto.getText());
+        Item item = itemRepository.findById(itemId).orElseThrow(() ->
+                new EntityNotFoundException("Item with id " + itemId + " not found"));
         Comment comment = commentRepository.save(commentMapper.mapFrom(commentDto, item, userId));
         return commentMapper.mapTo(comment);
-
     }
 }

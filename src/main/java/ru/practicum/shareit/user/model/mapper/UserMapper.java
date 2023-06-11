@@ -1,6 +1,6 @@
 package ru.practicum.shareit.user.model.mapper;
 
-import ru.practicum.shareit.entityInterfaces.EntityMapper;
+import ru.practicum.shareit.entityMapper.EntityMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.dto.UserDto;
 

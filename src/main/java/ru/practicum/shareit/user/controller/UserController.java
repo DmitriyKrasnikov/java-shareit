@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.Create;
-import ru.practicum.shareit.Update;
+import ru.practicum.shareit.validateInterfaces.Create;
+import ru.practicum.shareit.validateInterfaces.Update;
 import ru.practicum.shareit.user.model.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -41,7 +41,8 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto updateUser(@RequestBody @Validated(Update.class) UserDto userDto, @PathVariable long userId) {
+    public UserDto updateUser(@RequestBody @Validated(Update.class) UserDto userDto,
+                              @PathVariable long userId) {
         return userService.updateUser(userDto, userId);
     }
 

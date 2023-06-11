@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDtoForItem {
-    Long Id;
-    Long bookerId;
+    private Long Id;
+    private Long bookerId;
 }

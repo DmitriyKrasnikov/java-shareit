@@ -25,24 +25,26 @@ public class BookingMapperImpl implements BookingMapper {
     }
 
     @Override
-    public BookingDtoTo mapToWithClasses(Booking entity) {
-        return new BookingDtoTo(entity.getId(), entity.getStartDate(), entity.getEndDate(), entity.getStatus(),
-                new UserDtoForBooking(entity.getBooker().getId()), new ItemDtoForBooking(entity.getItem().getId(), entity.getItem().getName()));
+    public BookingDtoTo mapToWithClasses(Booking b) {
+        return new BookingDtoTo(b.getId(), b.getStartDate(), b.getEndDate(), b.getStatus(),
+                new UserDtoForBooking(b.getBooker().getId()),
+                new ItemDtoForBooking(b.getItem().getId(), b.getItem().getName()));
     }
 
     @Override
-    public BookingDtoFrom mapTo(Booking entity) {
-       return new BookingDtoFrom(entity.getId(), entity.getStartDate(), entity.getEndDate(), entity.getStatus(),
-                entity.getBooker().getId(), entity.getItem().getId());
+    public BookingDtoFrom mapTo(Booking b) {
+        return new BookingDtoFrom(b.getId(), b.getStartDate(), b.getEndDate(), b.getStatus(), b.getBooker().getId(),
+                b.getItem().getId());
     }
 
     @Override
     public Booking mapFrom(BookingDtoFrom entity) {
         User user = userRepository.findById(entity.getBookerId()).orElseThrow(() ->
                 new EntityNotFoundException("Пользователь с id " + entity.getBookerId() + "не найден"));
+
         Item item = itemRepository.findById(entity.getItemId()).orElseThrow(() ->
                 new EntityNotFoundException("Вещь с id " + entity.getItemId() + "не найдена"));
-        Booking booking = new Booking(entity.getId(), entity.getStart(), entity.getEnd(), entity.getStatus(), user, item);
-        return booking;
+
+        return new Booking(entity.getId(), entity.getStart(), entity.getEnd(), entity.getStatus(), user, item);
     }
 }

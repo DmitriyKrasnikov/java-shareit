@@ -2,7 +2,6 @@ package ru.practicum.shareit.item.service;
 
 import ru.practicum.shareit.item.model.dto.CommentDto;
 import ru.practicum.shareit.item.model.dto.ItemDto;
-import ru.practicum.shareit.item.model.dto.ItemDtoWithBookings;
 
 import java.util.List;
 

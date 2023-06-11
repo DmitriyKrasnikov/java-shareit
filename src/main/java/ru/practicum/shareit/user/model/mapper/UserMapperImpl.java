@@ -5,8 +5,6 @@ import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.dto.UserDto;
 
-import java.util.HashSet;
-
 @Component
 public class UserMapperImpl implements UserMapper {
 

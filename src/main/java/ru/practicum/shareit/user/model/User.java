@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.Create;
-import ru.practicum.shareit.Update;
+import ru.practicum.shareit.validateInterfaces.Create;
+import ru.practicum.shareit.validateInterfaces.Update;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -21,16 +21,16 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull(groups = {Create.class})
     @Min(groups = {Update.class}, value = 1L)
-    Long id;
+    private Long id;
     @EqualsAndHashCode.Include
     @NotBlank(groups = {Create.class})
     @Email(groups = {Create.class})
     @Column(name = "email")
-    String email;
+    private String email;
     @NotBlank(groups = {Create.class})
     @Column(name = "name")
-    String name;
+    private String name;
 }

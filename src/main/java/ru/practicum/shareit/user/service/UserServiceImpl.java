@@ -3,7 +3,6 @@ package ru.practicum.shareit.user.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.dto.UserDto;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -46,11 +44,11 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto, long userId) {
         log.info("Update user with id {}", userId);
         userDto.setId(userId);
-        User userB = userRepository.findById(userId).orElseThrow(() ->
+        User userBefore = userRepository.findById(userId).orElseThrow(() ->
                 new EntityNotFoundException("Пользователь с id " + userId + " не найден"));
-        User user = userMapper.mapFrom(userDto, userB);
-        userRepository.save(user);
-        return userMapper.mapTo(userRepository.findById(userId).get());
+
+        User user = userMapper.mapFrom(userDto, userBefore);
+        return userMapper.mapTo(userRepository.save(user));
     }
 
     public void deleteUser(long userId) {
