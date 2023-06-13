@@ -1,25 +1,21 @@
 package ru.practicum.shareit.booking.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.validateInterfaces.Create;
 import ru.practicum.shareit.booking.model.dto.BookingDtoFrom;
 import ru.practicum.shareit.booking.model.dto.BookingDtoTo;
-import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.booking.service.BookingServiceImpl;
+import ru.practicum.shareit.validateInterfaces.Create;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/bookings")
+@AllArgsConstructor
 public class BookingController {
-    private final BookingService bookingService;
-
-    @Autowired
-    public BookingController(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
+    private final BookingServiceImpl bookingService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.model.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.dto.BookingDtoFrom;
@@ -14,15 +14,10 @@ import ru.practicum.shareit.user.model.dto.UserDtoForBooking;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 @Component
+@AllArgsConstructor
 public class BookingMapperImpl implements BookingMapper {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-
-    @Autowired
-    public BookingMapperImpl(UserRepository userRepository, ItemRepository itemRepository) {
-        this.userRepository = userRepository;
-        this.itemRepository = itemRepository;
-    }
 
     @Override
     public BookingDtoTo mapToWithClasses(Booking b) {
@@ -40,10 +35,10 @@ public class BookingMapperImpl implements BookingMapper {
     @Override
     public Booking mapFrom(BookingDtoFrom entity) {
         User user = userRepository.findById(entity.getBookerId()).orElseThrow(() ->
-                new EntityNotFoundException("Пользователь с id " + entity.getBookerId() + "не найден"));
+                new EntityNotFoundException(String.format("Пользователь с id %s не найден", entity.getBookerId())));
 
         Item item = itemRepository.findById(entity.getItemId()).orElseThrow(() ->
-                new EntityNotFoundException("Вещь с id " + entity.getItemId() + "не найдена"));
+                new EntityNotFoundException(String.format("Вещь с id %s не найдена", entity.getItemId())));
 
         return new Booking(entity.getId(), entity.getStart(), entity.getEnd(), entity.getStatus(), user, item);
     }

@@ -1,8 +1,9 @@
 package ru.practicum.shareit.item.service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
@@ -19,22 +20,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 @Slf4j
+@AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    public final ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
     private final CommentMapper commentMapper;
     private final CommentRepository commentRepository;
 
-    @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper, CommentMapper commentMapper,
-                           CommentRepository commentRepository) {
-        this.itemRepository = itemRepository;
-        this.itemMapper = itemMapper;
-        this.commentMapper = commentMapper;
-        this.commentRepository = commentRepository;
-    }
-
+    @Transactional
     @Override
     public ItemDto createItem(ItemDto itemDto, long userId) {
         log.info("Create item");
@@ -42,18 +37,20 @@ public class ItemServiceImpl implements ItemService {
         return itemMapper.mapTo(item, userId);
     }
 
+    @Transactional
     @Override
     public ItemDto updateItem(ItemDto itemDto, long itemId, long userId) {
         log.info("Update item with id {}", itemId);
         Item itemBefore = itemRepository.findById(itemId).orElseThrow(() ->
-                new EntityNotFoundException("Вещь с id " + itemId + " не найдена"));
+                new EntityNotFoundException(String.format("Вещь с идентификатором %d не найдена", itemId)));
 
         if (itemBefore.getUser().getId() != userId) {
-            throw new EntityNotFoundException("Вещь " + itemBefore.getName() + " не принадлежит пользователю " + userId);
+            throw new EntityNotFoundException(String.format("Вещь %s не принадлежит пользователю с идентификатором %d",
+                    itemBefore.getName(), userId));
         }
 
         Item item = itemMapper.mapFrom(itemDto, itemBefore);
-        return itemMapper.mapTo(itemRepository.save(item), userId);
+        return itemMapper.mapTo(item, userId);
     }
 
     @Override
@@ -70,7 +67,7 @@ public class ItemServiceImpl implements ItemService {
         return items.stream()
                 .map(item -> itemMapper.mapTo(item, userId))
                 .sorted(Comparator.comparing((ItemDto item) ->
-                (item.getLastBooking() != null && item.getNextBooking() != null) ? 0 : 1))
+                        (item.getLastBooking() != null && item.getNextBooking() != null) ? 0 : 1))
                 .collect(Collectors.toList());
     }
 
@@ -82,11 +79,12 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public CommentDto createComment(CommentDto commentDto, long userId, long itemId) {
         log.info("Create comment {}", commentDto.getText());
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
-                new EntityNotFoundException("Item with id " + itemId + " not found"));
+                new EntityNotFoundException(String.format("Вещь с идентификатором %d не найдена", itemId)));
         Comment comment = commentRepository.save(commentMapper.mapFrom(commentDto, item, userId));
         return commentMapper.mapTo(comment);
     }

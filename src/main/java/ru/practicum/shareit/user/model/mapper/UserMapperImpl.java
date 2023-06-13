@@ -19,8 +19,7 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public User mapFrom(UserDto userDto, User user) {
-        User user1 = new User(user.getId(), user.getEmail(), user.getName());
+    public User mapFrom(UserDto userDto, User user1) {
         if (userDto.getEmail() != null) {
             user1.setEmail(userDto.getEmail());
         }

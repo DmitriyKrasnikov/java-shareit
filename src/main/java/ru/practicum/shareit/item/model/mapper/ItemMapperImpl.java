@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.model.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.dto.BookingDtoForItem;
@@ -18,18 +18,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@AllArgsConstructor
 public class ItemMapperImpl implements ItemMapper {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentMapper commentMapper;
-
-    @Autowired
-    public ItemMapperImpl(UserRepository userRepository, BookingRepository bookingRepository,
-                          CommentMapper commentMapper) {
-        this.userRepository = userRepository;
-        this.bookingRepository = bookingRepository;
-        this.commentMapper = commentMapper;
-    }
 
     @Override
     public ItemDto mapTo(Item item, long userId) {
@@ -57,14 +50,13 @@ public class ItemMapperImpl implements ItemMapper {
     @Override
     public Item mapFrom(ItemDto entity, long userId) {
         return new Item(entity.getId(),
-                userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("Невозможно создать " +
-                        entity.getName() + " так как пользователь " + userId + " не существует")),
+                userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format("Невозможно" +
+                        " создать %s так как пользователь с идентификатором %d не существует", entity.getName(), userId))),
                 entity.getName(), entity.getDescription(), entity.getAvailable(), new ArrayList<>());
     }
 
     @Override
-    public Item mapFrom(ItemDto itemDto, Item i) {
-        Item item = new Item(i.getId(), i.getUser(), i.getName(), i.getDescription(), i.getAvailable(), i.getComments());
+    public Item mapFrom(ItemDto itemDto, Item item) {
         if (itemDto.getName() != null) {
             item.setName(itemDto.getName());
         }

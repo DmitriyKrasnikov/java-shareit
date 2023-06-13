@@ -2,8 +2,8 @@ package ru.practicum.shareit.booking.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.practicum.shareit.validateInterfaces.Create;
 import ru.practicum.shareit.booking.model.BookingStatus;
+import ru.practicum.shareit.validateInterfaces.Create;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
@@ -20,7 +20,7 @@ public class BookingDtoFrom {
     @NotNull(groups = {Create.class})
     @Future(groups = {Create.class})
     private LocalDateTime end;
-    BookingStatus status;
+    private BookingStatus status;
     private long bookerId;
     @NotNull(groups = {Create.class})
     private long itemId;

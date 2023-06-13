@@ -4,12 +4,10 @@ import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.validateInterfaces.Create;
-import ru.practicum.shareit.validateInterfaces.Update;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.validateInterfaces.Create;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -22,8 +20,6 @@ import java.util.List;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = {Create.class})
-    @Min(groups = {Update.class}, value = 1L)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id")

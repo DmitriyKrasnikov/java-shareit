@@ -1,25 +1,21 @@
 package ru.practicum.shareit.user.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.validateInterfaces.Create;
-import ru.practicum.shareit.validateInterfaces.Update;
 import ru.practicum.shareit.user.model.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.validateInterfaces.Create;
+import ru.practicum.shareit.validateInterfaces.Update;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/users")
+@AllArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
