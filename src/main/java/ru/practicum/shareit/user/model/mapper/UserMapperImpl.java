@@ -5,8 +5,6 @@ import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.dto.UserDto;
 
-import java.util.HashSet;
-
 @Component
 public class UserMapperImpl implements UserMapper {
 
@@ -17,12 +15,11 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User mapFrom(UserDto entity) {
-        return new User(entity.getId(), entity.getEmail(), entity.getName(), new HashSet<>());
+        return new User(entity.getId(), entity.getEmail(), entity.getName());
     }
 
     @Override
-    public User mapFrom(UserDto userDto, User user) {
-        User user1 = new User(user.getId(), user.getEmail(), user.getName(), user.getItems());
+    public User mapFrom(UserDto userDto, User user1) {
         if (userDto.getEmail() != null) {
             user1.setEmail(userDto.getEmail());
         }

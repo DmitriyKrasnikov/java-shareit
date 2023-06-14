@@ -4,28 +4,36 @@ import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.Create;
-import ru.practicum.shareit.Update;
+import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.validateInterfaces.Create;
 
-import javax.validation.constraints.Min;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
+@Entity
+@Table(name = "items")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Item {
-    @NotNull(groups = {Create.class})
-    @Min(groups = {Update.class}, value = 1L)
-    Long id;
-    @NotNull(groups = {Create.class})
-    @Min(groups = {Update.class}, value = 1L)
-    Long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     @NotBlank(groups = {Create.class})
-    String name;
+    @Column(name = "name")
+    private String name;
     @NotBlank(groups = {Create.class})
-    String description;
+    @Column(name = "description")
+    private String description;
     @BooleanFlag
     @NotNull(groups = {Create.class})
-    Boolean available;
+    @Column(name = "available")
+    private Boolean available;
+    @Transient
+    private List<Comment> comments;
 }

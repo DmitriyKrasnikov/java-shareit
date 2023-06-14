@@ -1,4 +1,4 @@
-package ru.practicum.shareit.entityInterfaces;
+package ru.practicum.shareit.entityMapper;
 
 public interface EntityMapper<T, E> {
     T mapTo(E entity);
