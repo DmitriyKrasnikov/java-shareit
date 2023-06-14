@@ -29,11 +29,9 @@ public class Booking {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booker_id")
     private User booker;
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
