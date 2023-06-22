@@ -31,6 +31,7 @@ class ItemRequestServiceImplDBIntegrationTest {
 
     @Test
     void testGetItemRequests() {
+        userRepository.deleteAll();
         User user = new User(1L, "Us@mail.ru", "Us");
         User savedUser = userRepository.save(user);
 
