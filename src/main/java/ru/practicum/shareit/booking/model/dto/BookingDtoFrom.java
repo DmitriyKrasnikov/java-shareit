@@ -18,12 +18,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BookingDtoFrom {
     private Long id;
-    @NotNull(groups = {Create.class})
-    @FutureOrPresent(groups = {Create.class})
+    @NotNull(groups = {Create.class}, message = "не должно равняться null")
+    @FutureOrPresent(groups = {Create.class}, message = "должно содержать сегодняшнее число или дату, которая еще не наступила")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime start;
-    @NotNull(groups = {Create.class})
-    @Future(groups = {Create.class})
+    @NotNull(groups = {Create.class}, message = "не должно равняться null")
+    @Future(groups = {Create.class}, message = "должно содержать сегодняшнее число или дату, которая еще не наступила")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime end;
     private BookingStatus status;
