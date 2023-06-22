@@ -10,6 +10,7 @@ import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.dto.CommentDto;
 import ru.practicum.shareit.item.model.dto.ItemDto;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class ItemMapperImpl implements ItemMapper {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentMapper commentMapper;
+    private final ItemRequestRepository itemRequestRepository;
 
     @Override
     public ItemDto mapTo(Item item, long userId) {
@@ -44,15 +46,20 @@ public class ItemMapperImpl implements ItemMapper {
         List<CommentDto> commentDtoList = commentMapper.getComments(item.getId());
 
         return new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getAvailable(), bookingDtoLast,
-                bookingDtoNext, commentDtoList);
+                bookingDtoNext, commentDtoList, item.getItemRequest() != null ? item.getItemRequest().getId() : null);
     }
 
     @Override
     public Item mapFrom(ItemDto entity, long userId) {
-        return new Item(entity.getId(),
+        Item item = new Item(entity.getId(),
                 userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format("Невозможно" +
                         " создать %s так как пользователь с идентификатором %d не существует", entity.getName(), userId))),
                 entity.getName(), entity.getDescription(), entity.getAvailable(), new ArrayList<>());
+        if (entity.getRequestId() != null) {
+            item.setItemRequest(itemRequestRepository.findById(entity.getRequestId()).orElseThrow(() ->
+                    new EntityNotFoundException(String.format("Request with id %d does not exist", entity.getRequestId()))));
+        }
+        return item;
     }
 
     @Override
