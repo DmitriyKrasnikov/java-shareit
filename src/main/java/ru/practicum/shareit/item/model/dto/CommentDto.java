@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentDto {
     private Long id;
-    @NotBlank(groups = Create.class)
+    @NotBlank(groups = Create.class, message = "не должно быть пустым")
     @Size(groups = {Create.class, Update.class}, max = 1000)
     private String text;
     private String authorName;

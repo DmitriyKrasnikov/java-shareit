@@ -126,7 +126,7 @@ public class BookingDtoFromTest {
                 .validate(dto, Create.class);
         assertEquals(1, violations.size());
         assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("должно содержать дату, которая еще" +
-                " не наступила");
+        assertThat(violations.iterator().next().getMessage()).isEqualTo("должно содержать сегодняшнее число " +
+                "или дату, которая еще не наступила");
     }
 }

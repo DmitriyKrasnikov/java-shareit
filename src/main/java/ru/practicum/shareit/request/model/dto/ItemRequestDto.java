@@ -19,8 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 public class ItemRequestDto {
     private Long id;
-    @NotBlank(groups = {Create.class, Update.class})
-    @Size(groups = {Create.class, Update.class}, min = 1, max = 255)
+    @NotBlank(groups = {Create.class, Update.class}, message = "не должно быть пустым")
+    @Size(groups = {Create.class, Update.class}, min = 1, max = 255, message = "размер должен находиться в диапазоне" +
+            " от 1 до 255")
     private String description;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime created;
