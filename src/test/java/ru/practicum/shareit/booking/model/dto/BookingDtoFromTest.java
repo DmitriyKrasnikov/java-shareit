@@ -20,22 +20,22 @@ public class BookingDtoFromTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private final Long ID = 1L;
-    private final LocalDateTime START = LocalDateTime.of(2023, 6, 22, 14, 30);
-    private final LocalDateTime END = LocalDateTime.of(2023, 6, 22, 15, 0);
-    private final BookingStatus STATUS = BookingStatus.WAITING;
-    private final Long BOOKER_ID = 2L;
-    private final Long ITEM_ID = 3L;
+    private final Long id = 1L;
+    private final LocalDateTime start = LocalDateTime.of(2023, 6, 22, 14, 30);
+    private final LocalDateTime end = LocalDateTime.of(2023, 6, 22, 15, 0);
+    private final BookingStatus status = BookingStatus.WAITING;
+    private final Long bookerId = 2L;
+    private final Long itemId = 3L;
 
     @Test
     public void testSerialize() throws Exception {
         BookingDtoFrom bookingDtoFrom = new BookingDtoFrom();
-        bookingDtoFrom.setId(ID);
-        bookingDtoFrom.setStart(START);
-        bookingDtoFrom.setEnd(END);
-        bookingDtoFrom.setStatus(STATUS);
-        bookingDtoFrom.setBookerId(BOOKER_ID);
-        bookingDtoFrom.setItemId(ITEM_ID);
+        bookingDtoFrom.setId(id);
+        bookingDtoFrom.setStart(start);
+        bookingDtoFrom.setEnd(end);
+        bookingDtoFrom.setStatus(status);
+        bookingDtoFrom.setBookerId(bookerId);
+        bookingDtoFrom.setItemId(itemId);
 
         String expectedJson = "{\"id\":1,\"start\":\"2023-06-22T14:30:00\",\"end\":\"2023-06-22T15:00:00\"," +
                 "\"status\":\"WAITING\",\"bookerId\":2,\"itemId\":3}";
@@ -50,12 +50,12 @@ public class BookingDtoFromTest {
                 "\":\"WAITING\",\"bookerId\":2,\"itemId\":3}";
 
         BookingDtoFrom expectedBookingDtoFrom = new BookingDtoFrom();
-        expectedBookingDtoFrom.setId(ID);
-        expectedBookingDtoFrom.setStart(START);
-        expectedBookingDtoFrom.setEnd(END);
-        expectedBookingDtoFrom.setStatus(STATUS);
-        expectedBookingDtoFrom.setBookerId(BOOKER_ID);
-        expectedBookingDtoFrom.setItemId(ITEM_ID);
+        expectedBookingDtoFrom.setId(id);
+        expectedBookingDtoFrom.setStart(start);
+        expectedBookingDtoFrom.setEnd(end);
+        expectedBookingDtoFrom.setStatus(status);
+        expectedBookingDtoFrom.setBookerId(bookerId);
+        expectedBookingDtoFrom.setItemId(itemId);
 
         BookingDtoFrom actualBookingDtoFrom = objectMapper.readValue(json, BookingDtoFrom.class);
         assertThat(actualBookingDtoFrom).isEqualTo(expectedBookingDtoFrom);
