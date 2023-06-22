@@ -26,6 +26,7 @@ class UserServiceImplDBIntegrationTest {
 
     @Test
     void testGetUsers() {
+        userRepository.deleteAll();
         User user1 = new User(null, "user1@example.com", "User 1");
         User user2 = new User(null, "user2@example.com", "User 2");
         userRepository.saveAll(Arrays.asList(user1, user2));

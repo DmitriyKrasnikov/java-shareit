@@ -29,29 +29,18 @@ public class ItemServiceImplDBIntegrationTest {
     private ItemRepository itemRepository;
     @Autowired
     private UserRepository userRepository;
-    private Long userId;
-    private Long itemId;
 
-    @BeforeAll
-    public void setUp() {
+    @Test
+    public void testGetItems() {
         User user = new User(1L, "test_user", "password");
-        userId = user.getId();
+        Long userId = user.getId();
         user = userRepository.save(user);
 
         Item item = new Item(1L, user, "Test item", "Test item description",
                 true, new ArrayList<>());
         item = itemRepository.save(item);
-        itemId = item.getId();
-    }
+        Long itemId = item.getId();
 
-    @AfterAll
-    public void tearDown() {
-        itemRepository.deleteById(itemId);
-        userRepository.deleteById(userId);
-    }
-
-    @Test
-    public void testGetItems() {
         List<ItemDto> items = itemService.getItems(userId);
         assertNotNull(items);
         assertTrue(items.size() > 0);
