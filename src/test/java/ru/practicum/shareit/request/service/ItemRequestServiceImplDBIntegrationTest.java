@@ -31,11 +31,13 @@ class ItemRequestServiceImplDBIntegrationTest {
 
     @Test
     void testGetItemRequests() {
-        userRepository.deleteAll();
-        User user = new User(1L, "Us@mail.ru", "Us");
+        User user = new User();
+        user.setEmail("Us@mail.ru");
+        user.setName("Us");
         User savedUser = userRepository.save(user);
 
-        ItemRequest itemRequest = new ItemRequest(1L, "Test", LocalDateTime.now(), user, new ArrayList<>());
+        ItemRequest itemRequest = new ItemRequest(1L, "Test", LocalDateTime.now(),
+                userRepository.findByEmail("Us@mail.ru").get(), new ArrayList<>());
         ItemRequest savedItemRequest = itemRequestRepository.save(itemRequest);
 
         List<ItemRequestDto> itemRequests = itemRequestService.getItemRequests(savedUser.getId());

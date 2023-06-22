@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ItemServiceImplDBIntegrationTest {
     @Autowired
     private ItemService itemService;
@@ -32,14 +31,19 @@ public class ItemServiceImplDBIntegrationTest {
     @Test
     @Transactional
     public void testGetItems() {
-        User user = new User(1L, "test_user", "password");
-        Long userId = user.getId();
+        User user = new User();
+        user.setEmail("test_user@mail.ru");
+        user.setName("password");
         user = userRepository.save(user);
+        Long userId = userRepository.findByEmail("test_user@mail.ru").get().getId();
 
-        Item item = new Item(1L, user, "Test item", "Test item description",
-                true, new ArrayList<>());
-        item = itemRepository.save(item);
-        Long itemId = item.getId();
+        Item item = new Item();
+        item.setUser(user);
+        item.setName("Test item");
+        item.setDescription("Test item description");
+        item.setAvailable(true);
+        item.setComments(new ArrayList<>());
+        itemRepository.save(item);
 
         List<ItemDto> items = itemService.getItems(userId);
         assertNotNull(items);
