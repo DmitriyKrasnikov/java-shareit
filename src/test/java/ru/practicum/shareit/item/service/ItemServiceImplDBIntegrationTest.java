@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.dto.ItemDto;
 import ru.practicum.shareit.item.repository.ItemRepository;
@@ -29,6 +30,7 @@ public class ItemServiceImplDBIntegrationTest {
     private UserRepository userRepository;
 
     @Test
+    @Transactional
     public void testGetItems() {
         User user = new User(1L, "test_user", "password");
         Long userId = user.getId();
