@@ -259,6 +259,156 @@ public class BookingServiceImplUnitTest {
     }
 
     @Test
+    void testGetUserBookingsPast_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "PAST";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().minusMinutes(10), LocalDateTime.now().minusMinutes(5),
+                BookingStatus.WAITING, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.APPROVED, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findPastBookingsByBookerId(eq(userId), any(LocalDateTime.class),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getUserBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetUserBookingsCurrent_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "CURRENT";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().minusMinutes(10), LocalDateTime.now().plusMinutes(5),
+                BookingStatus.WAITING, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.APPROVED, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findCurrentBookingsByBookerId(eq(userId), any(LocalDateTime.class),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getUserBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetUserBookingsFuture_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "FUTURE";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().plusMinutes(10), LocalDateTime.now().plusMinutes(15),
+                BookingStatus.WAITING, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.APPROVED, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findFutureBookingsByBookerId(eq(userId), any(LocalDateTime.class),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getUserBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetUserBookingsStatusWaiting_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "WAITING";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().plusMinutes(10), LocalDateTime.now().plusMinutes(15),
+                BookingStatus.WAITING, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.WAITING, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findWaitingBookingsByBookerId(eq(userId), eq(BookingStatus.WAITING),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getUserBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetUserBookingsStatusRejected_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "REJECTED";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().plusMinutes(10), LocalDateTime.now().plusMinutes(15),
+                BookingStatus.REJECTED, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.REJECTED, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findRejectedBookingsByBookerId(eq(userId), eq(BookingStatus.REJECTED),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getUserBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
     void testGetUserBookings_withInvalidFromParameter_shouldThrowIllegalArgumentException() {
         long userId = 1L;
         String state = "ALL";
@@ -312,6 +462,156 @@ public class BookingServiceImplUnitTest {
 
         when(bookingRepository.findByItemOwnerIdOrderByStartDateDesc(userId, PageRequest.of(from / size, size)))
                 .thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getOwnerBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetOwnerBookingsPast_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "PAST";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().minusMinutes(10), LocalDateTime.now().minusMinutes(5),
+                BookingStatus.WAITING, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.APPROVED, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findPastBookingsByItemOwnerIdOrderByStartDateDesc(eq(userId), any(LocalDateTime.class),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getOwnerBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetOwnerBookingsCurrent_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "CURRENT";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().minusMinutes(10), LocalDateTime.now().plusMinutes(5),
+                BookingStatus.WAITING, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.APPROVED, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findCurrentBookingsByItemOwnerIdOrderByStartDateDesc(eq(userId), any(LocalDateTime.class),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getOwnerBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetOwnerBookingsFuture_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "FUTURE";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().plusMinutes(10), LocalDateTime.now().plusMinutes(15),
+                BookingStatus.WAITING, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.APPROVED, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findFutureBookingsByItemOwnerIdOrderByStartDateDesc(eq(userId), any(LocalDateTime.class),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getOwnerBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetOwnerBookingsStatusWaiting_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "WAITING";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().plusMinutes(10), LocalDateTime.now().plusMinutes(15),
+                BookingStatus.WAITING, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.WAITING, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findByItemOwnerIdAndStatusOrderByStartDateDesc(eq(userId), eq(BookingStatus.WAITING),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
+
+        when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
+
+        List<BookingDtoTo> result = bookingService.getOwnerBookings(userId, state, from, size);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(bookingDtoTo, result.get(0));
+    }
+
+    @Test
+    void testGetOwnerBookingsStatusRejected_withValidInputParameters_shouldReturnListOfBookingDto() {
+        long userId = 1L;
+        String state = "REJECTED";
+        int from = 0;
+        int size = 10;
+
+        User owner = new User(1L, "test1@test.com", "Test1");
+        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        User booker = new User(2L, "test2@test.com", "Test2");
+
+        Booking booking = new Booking(2L, LocalDateTime.now().plusMinutes(10), LocalDateTime.now().plusMinutes(15),
+                BookingStatus.REJECTED, booker, item);
+
+        BookingDtoTo bookingDtoTo = new BookingDtoTo(2L, booking.getStartDate(), booking.getEndDate(),
+                BookingStatus.REJECTED, new UserDtoForBooking(booker.getId()), new ItemDtoForBooking(item.getId(),
+                item.getName()));
+
+        when(bookingRepository.findByItemOwnerIdAndStatusOrderByStartDateDesc(eq(userId), eq(BookingStatus.REJECTED),
+                eq(PageRequest.of(from / size, size)))).thenReturn(List.of(booking));
 
         when(bookingMapper.mapToWithClasses(any(Booking.class))).thenReturn(bookingDtoTo);
 
