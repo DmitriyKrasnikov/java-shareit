@@ -25,6 +25,7 @@ public class ItemRepositoryTest {
     private ItemRepository itemRepository;
 
     private User user;
+    private ItemRequest request;
 
     @BeforeEach
     public void setUp() {
@@ -43,7 +44,7 @@ public class ItemRepositoryTest {
         entityManager.persist(item2);
         entityManager.persist(item3);
 
-        ItemRequest request = new ItemRequest(null, "Please give me this item", LocalDateTime.now(), user,
+        request = new ItemRequest(null, "Please give me this item", LocalDateTime.now(), user,
                 null);
         entityManager.persist(request);
 
@@ -72,7 +73,7 @@ public class ItemRepositoryTest {
 
     @Test
     void testFindByItemRequestIdAndAvailableTrue() {
-        List<Item> items = itemRepository.findByItemRequestIdAndAvailableTrue(3L);
+        List<Item> items = itemRepository.findByItemRequestIdAndAvailableTrue(request.getId());
         assertEquals(1, items.size());
     }
 
