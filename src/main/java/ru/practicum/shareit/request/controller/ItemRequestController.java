@@ -9,6 +9,8 @@ import ru.practicum.shareit.validateInterfaces.Create;
 
 import java.util.List;
 
+import static ru.practicum.shareit.user.controller.UserController.X_SHARER_USER_ID;
+
 @RestController
 @RequestMapping(path = "/requests")
 @AllArgsConstructor
@@ -18,24 +20,24 @@ public class ItemRequestController {
 
     @PostMapping
     public ItemRequestDto createItemRequest(@RequestBody @Validated(Create.class) ItemRequestDto itemRequest,
-                                            @RequestHeader("X-Sharer-User-Id") long userId) {
+                                            @RequestHeader(X_SHARER_USER_ID) long userId) {
         return itemRequestService.createItemRequest(itemRequest, userId);
     }
 
     @GetMapping
-    public List<ItemRequestDto> getOwnerRequests(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemRequestDto> getOwnerRequests(@RequestHeader(X_SHARER_USER_ID) long userId) {
         return itemRequestService.getItemRequests(userId);
     }
 
     @GetMapping("/all")
-    public List<ItemRequestDto> getOtherRequests(@RequestHeader("X-Sharer-User-Id") long userId,
+    public List<ItemRequestDto> getOtherRequests(@RequestHeader(X_SHARER_USER_ID) long userId,
                                                  @RequestParam(name = "from", defaultValue = "0") int from,
                                                  @RequestParam(name = "size", defaultValue = "10") int size) {
         return itemRequestService.getItemWithPagination(userId, from, size);
     }
 
     @GetMapping("{requestId}")
-    public ItemRequestDto getRequest(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemRequestDto getRequest(@RequestHeader(X_SHARER_USER_ID) long userId,
                                      @PathVariable long requestId) {
         return itemRequestService.getItemRequest(requestId, userId);
     }

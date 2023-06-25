@@ -139,8 +139,8 @@ public class ItemRequestDtoTest {
                 Create.class, Update.class);
 
         assertThat(violations.size()).isEqualTo(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("размер должен находиться в диапазоне" +
-                " от 1 до 255");
+        assertThat(violations.iterator().next().getMessage())
+                .isEqualTo("размер должен находиться в диапазоне от 1 до 255");
     }
 
     @Configuration

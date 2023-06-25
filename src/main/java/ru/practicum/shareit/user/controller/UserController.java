@@ -17,6 +17,8 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    public static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Validated(Create.class) UserDto userDto) {

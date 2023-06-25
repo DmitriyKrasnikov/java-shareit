@@ -44,8 +44,8 @@ public class UserDtoTest {
                 Create.class, Update.class);
 
         assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("должно иметь формат адреса" +
-                " электронной почты");
+        assertThat(violations.iterator().next().getMessage())
+                .isEqualTo("должно иметь формат адреса электронной почты");
     }
 
     @Test
