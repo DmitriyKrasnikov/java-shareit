@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,9 +17,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentDto {
     private Long id;
-    @NotBlank(groups = Create.class)
+    @NotBlank(groups = Create.class, message = "не должно быть пустым")
     @Size(groups = {Create.class, Update.class}, max = 1000)
     private String text;
     private String authorName;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime created;
 }
