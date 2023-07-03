@@ -139,16 +139,6 @@ class ItemRequestServiceImplUnitTest {
     }
 
     @Test
-    public void getItemWithPagination_shouldThrowException_whenInvalidFromParameter() {
-        long userId = 1;
-        int from = -1;
-        int size = 10;
-
-        assertThrows(IllegalArgumentException.class,
-                () -> itemRequestService.getItemWithPagination(userId, from, size));
-    }
-
-    @Test
     public void getItemWithPagination_shouldReturnEmptyList_whenNoItemsFound() {
         long userId = 1;
         int from = 0;

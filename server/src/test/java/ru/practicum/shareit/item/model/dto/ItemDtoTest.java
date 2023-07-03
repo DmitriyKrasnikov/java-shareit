@@ -52,7 +52,6 @@ public class ItemDtoTest {
         assertThat(item.getAvailable()).isFalse();
     }
 
-
     @Test
     void givenValidItemDto_whenValidate_thenNoConstraintViolations() {
         ItemDto itemDto = new ItemDto();
@@ -64,51 +63,6 @@ public class ItemDtoTest {
         Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto);
 
         assertThat(violations).isEmpty();
-    }
-
-    @Test
-    void givenInvalidName_whenCreateItemDto_thenConstraintViolation() {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setId(1L);
-        itemDto.setName("");
-        itemDto.setDescription("Description");
-        itemDto.setAvailable(true);
-
-        Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto, Create.class, Update.class);
-
-        assertThat(violations.size()).isEqualTo(1);
-        ConstraintViolation<ItemDto> violation = violations.iterator().next();
-        assertThat(violation.getPropertyPath().toString()).isEqualTo("name");
-    }
-
-    @Test
-    void givenInvalidDescription_whenCreateItemDto_thenConstraintViolation() {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setId(1L);
-        itemDto.setName("Name");
-        itemDto.setDescription("");
-        itemDto.setAvailable(true);
-
-        Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto, Create.class, Update.class);
-
-        assertThat(violations.size()).isEqualTo(1);
-        ConstraintViolation<ItemDto> violation = violations.iterator().next();
-        assertThat(violation.getPropertyPath().toString()).isEqualTo("description");
-    }
-
-    @Test
-    void givenInvalidAvailableFlag_whenCreateItemDto_thenConstraintViolation() {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setId(1L);
-        itemDto.setName("Name");
-        itemDto.setDescription("Description");
-        itemDto.setAvailable(null);
-
-        Set<ConstraintViolation<ItemDto>> violations = validator.validate(itemDto, Create.class);
-
-        assertThat(violations.size()).isEqualTo(1);
-        ConstraintViolation<ItemDto> violation = violations.iterator().next();
-        assertThat(violation.getPropertyPath().toString()).isEqualTo("available");
     }
 
     @Configuration

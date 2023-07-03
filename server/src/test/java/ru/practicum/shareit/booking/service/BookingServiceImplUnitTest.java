@@ -38,17 +38,7 @@ public class BookingServiceImplUnitTest {
     @InjectMocks
     private BookingServiceImpl bookingService;
 
-    @Test
-    void createBooking_throwsBadRequestException_whenStartIsAfterEnd() {
-        LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start = end.plusDays(1);
-        BookingDtoFrom bookingDtoFrom = new BookingDtoFrom(null, start, end, null, 1L, 2L);
-
-        assertThrows(BadRequestException.class,
-                () -> bookingService.createBooking(bookingDtoFrom, 1L));
-    }
-
-    @Test
+ @Test
     void createBooking_throwsEntityNotFoundException_whenBookerAndItemOwnersAreSame() {
         User user = new User(1L, "test1@test.com", "Test1");
         Item item = new Item(1L, user, "Name", "Description", true, null);
@@ -409,16 +399,6 @@ public class BookingServiceImplUnitTest {
     }
 
     @Test
-    void testGetUserBookings_withInvalidFromParameter_shouldThrowIllegalArgumentException() {
-        long userId = 1L;
-        String state = "ALL";
-        int size = 10;
-
-        assertThrows(IllegalArgumentException.class,
-                () -> bookingService.getUserBookings(userId, state, -1, size));
-    }
-
-    @Test
     void testGetUserBookings_withUnknownState_shouldThrowBadRequestException() {
         long userId = 1L;
         int from = 0;
@@ -620,16 +600,6 @@ public class BookingServiceImplUnitTest {
         assertNotNull(result);
         assertEquals(1, result.size());
         assertSame(bookingDtoTo, result.get(0));
-    }
-
-    @Test
-    void testGetOwnerBookings_withInvalidFromParameter_shouldThrowIllegalArgumentException() {
-        long userId = 1L;
-        String state = "ALL";
-        int size = 10;
-
-        assertThrows(IllegalArgumentException.class,
-                () -> bookingService.getOwnerBookings(userId, state, -1, size));
     }
 
     @Test

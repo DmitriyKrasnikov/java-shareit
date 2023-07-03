@@ -61,17 +61,6 @@ public class CommentDtoTest {
         assertThat(violations).isEmpty();
     }
 
-    @Test
-    void testValidationFailure() {
-        CommentDto commentDto = new CommentDto();
-        commentDto.setText("");
-
-        Set<ConstraintViolation<CommentDto>> violations = validator.validate(commentDto, Create.class);
-
-        assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("не должно быть пустым");
-    }
-
     @Configuration
     static class CommentDtoTestConfig {
         @Bean

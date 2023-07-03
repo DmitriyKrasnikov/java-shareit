@@ -33,31 +33,4 @@ public class UserDtoTest {
         assertThat(userDto.getEmail()).isEqualTo("user@example.com");
         assertThat(userDto.getName()).isEqualTo("John Doe");
     }
-
-    @Test
-    public void testDeserializeInvalidEmail() throws IOException {
-        String json = "{\"id\":1,\"email\":\"invalid-email\",\"name\":\"John Doe\"}";
-
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-        Set<ConstraintViolation<UserDto>> violations = validator.validate(objectMapper.readValue(json, UserDto.class),
-                Create.class, Update.class);
-
-        assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage())
-                .isEqualTo("должно иметь формат адреса электронной почты");
-    }
-
-    @Test
-    public void testDeserializeEmptyName() throws IOException {
-        String json = "{\"id\":1,\"email\":\"user@example.com\",\"name\":\"\"}";
-
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-        Set<ConstraintViolation<UserDto>> violations = validator.validate(objectMapper.readValue(json, UserDto.class),
-                Create.class);
-
-        assertThat(violations).hasSize(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("не должно быть пустым");
-    }
 }

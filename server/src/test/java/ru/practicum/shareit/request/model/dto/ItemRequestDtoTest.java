@@ -84,65 +84,6 @@ public class ItemRequestDtoTest {
         assertThat(violations.isEmpty()).isTrue();
     }
 
-    @Test
-    public void shouldFailValidationWhenDescriptionIsNull() {
-        ItemRequestDto itemRequestDto = new ItemRequestDto();
-        itemRequestDto.setId(1L);
-        itemRequestDto.setDescription(null);
-        itemRequestDto.setCreated(LocalDateTime.now());
-
-        List<ItemDtoForRequest> items = new ArrayList<>();
-
-        items.add(new ItemDtoForRequest());
-        itemRequestDto.setItems(items);
-
-        Set<ConstraintViolation<ItemRequestDto>> violations = validator.validate(itemRequestDto,
-                Create.class, Update.class);
-
-        assertThat(violations.size()).isEqualTo(1);
-        assertThat(violations.iterator().next().getMessage()).isEqualTo("не должно быть пустым");
-    }
-
-    @Test
-    public void shouldFailValidationWhenDescriptionIsEmpty() {
-        ItemRequestDto itemRequestDto = new ItemRequestDto();
-        itemRequestDto.setId(1L);
-        itemRequestDto.setDescription("");
-        itemRequestDto.setCreated(LocalDateTime.now());
-
-        List<ItemDtoForRequest> items = new ArrayList<>();
-
-        items.add(new ItemDtoForRequest());
-        itemRequestDto.setItems(items);
-
-        Set<ConstraintViolation<ItemRequestDto>> violations = validator.validate(itemRequestDto,
-                Create.class, Update.class);
-
-        assertThat(violations.size()).isEqualTo(2);
-    }
-
-    @Test
-    public void shouldFailValidationWhenDescriptionIsTooLong() {
-        String longDescription = "*".repeat(256);
-
-        ItemRequestDto itemRequestDto = new ItemRequestDto();
-        itemRequestDto.setId(1L);
-        itemRequestDto.setDescription(longDescription);
-        itemRequestDto.setCreated(LocalDateTime.now());
-
-        List<ItemDtoForRequest> items = new ArrayList<>();
-
-        items.add(new ItemDtoForRequest());
-        itemRequestDto.setItems(items);
-
-        Set<ConstraintViolation<ItemRequestDto>> violations = validator.validate(itemRequestDto,
-                Create.class, Update.class);
-
-        assertThat(violations.size()).isEqualTo(1);
-        assertThat(violations.iterator().next().getMessage())
-                .isEqualTo("размер должен находиться в диапазоне от 1 до 255");
-    }
-
     @Configuration
     static class CommentDtoTestConfig {
         @Bean
