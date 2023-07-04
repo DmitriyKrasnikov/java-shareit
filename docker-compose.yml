@@ -22,7 +22,7 @@ services:
     depends_on:
     - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shareit_db:5432/shareit
 
   db:
     image: postgres
@@ -33,6 +33,4 @@ services:
       - POSTGRES_DB=shareit
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=iamroot
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
