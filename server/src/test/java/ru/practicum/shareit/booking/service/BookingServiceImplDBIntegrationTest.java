@@ -47,7 +47,14 @@ class BookingServiceImplDBIntegrationTest {
         owner.setName("Sina");
         userRepository.saveAll(Arrays.asList(booker, owner));
 
-        Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
+        Item item = new Item();
+
+        item.setUser(owner);
+        item.setName("Name");
+        item.setDescription("Description");
+        item.setAvailable(true);
+        item.setComments(new ArrayList<>());
+
         itemRepository.save(item);
 
         LocalDateTime now = LocalDateTime.now();
