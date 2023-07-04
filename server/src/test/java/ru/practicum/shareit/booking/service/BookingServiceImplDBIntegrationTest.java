@@ -39,7 +39,7 @@ class BookingServiceImplDBIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        User booker= new User();
+        User booker = new User();
         booker.setEmail("Email@mail.ru");
         booker.setName("Jon");
         User owner = new User();
