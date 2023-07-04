@@ -39,8 +39,12 @@ class BookingServiceImplDBIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        User booker = new User(1L, "Иван", "Иванов");
-        User owner = new User(2L, "Василий", "Теркин");
+        User booker= new User();
+        booker.setEmail("Email@mail.ru");
+        booker.setName("Jon");
+        User owner = new User();
+        owner.setEmail("Pes@mail.ru");
+        owner.setName("Sina");
         userRepository.saveAll(Arrays.asList(booker, owner));
 
         Item item = new Item(1L, owner, "Name", "Description", true, new ArrayList<>());
@@ -57,7 +61,7 @@ class BookingServiceImplDBIntegrationTest {
 
     @Test
     void testGetUserBookings() {
-        long userId = 1L;
+        long userId = userRepository.findByEmail("Email@mail.ru").get().getId();
         String state = "ALL";
         int from = 0;
         int size = 10;
