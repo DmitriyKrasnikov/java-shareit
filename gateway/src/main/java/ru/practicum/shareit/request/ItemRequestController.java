@@ -20,7 +20,6 @@ import static ru.practicum.shareit.item.ItemController.X_SHARER_USER_ID;
 @Slf4j
 @Validated
 public class ItemRequestController {
-
     private final ItemRequestClient itemRequestClient;
 
     @PostMapping

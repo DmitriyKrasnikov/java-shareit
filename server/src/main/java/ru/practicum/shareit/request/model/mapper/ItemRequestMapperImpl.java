@@ -13,7 +13,6 @@ import ru.practicum.shareit.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -41,7 +40,6 @@ public class ItemRequestMapperImpl implements ItemRequestMapper {
 
     private List<ItemDtoForRequest> getItems(ItemRequest i) {
         return itemRepository.findByItemRequestIdAndAvailableTrue(i.getId()).stream()
-                .filter(Objects::nonNull)
                 .map(item -> new ItemDtoForRequest(item.getId(), item.getName(), item.getDescription(),
                         item.getAvailable(), item.getItemRequest().getId()))
                 .collect(Collectors.toList());

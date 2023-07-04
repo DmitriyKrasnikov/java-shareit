@@ -141,7 +141,7 @@ public class BookingServiceImpl implements BookingService {
         return bookings.stream().map(bookingMapper::mapToWithClasses).collect(Collectors.toList());
     }
 
-    private void createCheck(Booking bookingBefore){
+    private void createCheck(Booking bookingBefore) {
         if (bookingBefore.getItem().getUser().getId().equals(bookingBefore.getBooker().getId())) {
             throw new EntityNotFoundException("Собственник вещи не может ее забронировать");
         }
@@ -152,7 +152,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private void approvedCheck(Booking booking,long userId, BookingStatus newStatus){
+    private void approvedCheck(Booking booking, long userId, BookingStatus newStatus) {
         if (booking.getItem().getUser().getId() != userId) {
             throw new EntityNotFoundException(String.format("Вы не можете подтвердить бронь, так как не являетесь " +
                     "владельцем вещи: %s", booking.getItem().getName()));

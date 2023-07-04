@@ -15,7 +15,6 @@ import ru.practicum.shareit.validateInterfaces.Update;
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
-
     private final UserClient userClient;
 
     @PostMapping

@@ -16,7 +16,6 @@ import ru.practicum.shareit.validateInterfaces.Update;
 @RequiredArgsConstructor
 @Slf4j
 public class ItemController {
-
     private final ItemClient itemClient;
     public static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 

@@ -6,11 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.item.model.dto.ItemDtoForRequest;
-import ru.practicum.shareit.validateInterfaces.Create;
-import ru.practicum.shareit.validateInterfaces.Update;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 

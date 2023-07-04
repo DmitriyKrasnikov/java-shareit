@@ -7,8 +7,6 @@ import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.practicum.shareit.item.model.dto.ItemDtoForRequest;
-import ru.practicum.shareit.validateInterfaces.Create;
-import ru.practicum.shareit.validateInterfaces.Update;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
