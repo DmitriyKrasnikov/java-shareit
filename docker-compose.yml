@@ -11,8 +11,6 @@ services:
     - server
     environment:
       - SHAREIT_SERVER_URL=http://server:9090
-    networks:
-      - shareit-network
 
   server:
     build:
@@ -25,22 +23,15 @@ services:
     - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
-    networks:
-      - shareit-network
 
   db:
     image: postgres
     container_name: shareit_db
     ports:
-      - "6541:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_DB=shareit
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=iamroot
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - shareit-network
-
-  networks:
-    shareit-network:
