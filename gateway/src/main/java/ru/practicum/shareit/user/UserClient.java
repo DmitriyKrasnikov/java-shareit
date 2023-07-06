@@ -28,7 +28,6 @@ public class UserClient extends BaseClient {
         return post("", userDto);
     }
 
-
     public ResponseEntity<Object> getUser(long userId) {
         return get("/" + userId);
     }

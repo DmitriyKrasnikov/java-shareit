@@ -8,13 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.practicum.shareit.item.model.dto.ItemDtoForRequest;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,8 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemRequestDtoTest {
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private Validator validator;
 
     @Test
     public void serializeJson() throws Exception {
@@ -62,31 +56,5 @@ public class ItemRequestDtoTest {
         assertThat(dto.getItems()).hasSize(1);
         assertThat(dto.getItems().get(0).getId()).isEqualTo(1L);
         assertThat(dto.getItems().get(0).getName()).isEqualTo("Test item");
-    }
-
-
-    @Test
-    public void shouldValidateSuccessfully() {
-        ItemRequestDto itemRequestDto = new ItemRequestDto();
-        itemRequestDto.setId(1L);
-        itemRequestDto.setDescription("Valid description");
-        itemRequestDto.setCreated(LocalDateTime.now());
-
-        List<ItemDtoForRequest> items = new ArrayList<>();
-
-        items.add(new ItemDtoForRequest());
-        itemRequestDto.setItems(items);
-
-        Set<ConstraintViolation<ItemRequestDto>> violations = validator.validate(itemRequestDto);
-
-        assertThat(violations.isEmpty()).isTrue();
-    }
-
-    @Configuration
-    static class CommentDtoTestConfig {
-        @Bean
-        public Validator validator() {
-            return Validation.buildDefaultValidatorFactory().getValidator();
-        }
     }
 }

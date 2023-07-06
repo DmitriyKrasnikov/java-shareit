@@ -7,10 +7,7 @@ import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.validateInterfaces.Create;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,17 +56,5 @@ public class BookingDtoFromTest {
 
         BookingDtoFrom actualBookingDtoFrom = objectMapper.readValue(json, BookingDtoFrom.class);
         assertThat(actualBookingDtoFrom).isEqualTo(expectedBookingDtoFrom);
-    }
-
-    @Test
-    public void testBookingDtoFromValidationSuccess() {
-        BookingDtoFrom dto = new BookingDtoFrom(1L,
-                LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(2),
-                BookingStatus.WAITING,
-                1L, 2L);
-        Set<ConstraintViolation<BookingDtoFrom>> violations = Validation.buildDefaultValidatorFactory().getValidator()
-                .validate(dto, Create.class);
-        assertEquals(0, violations.size());
     }
 }

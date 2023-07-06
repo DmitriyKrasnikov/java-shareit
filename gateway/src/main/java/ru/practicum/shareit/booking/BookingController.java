@@ -14,6 +14,8 @@ import ru.practicum.shareit.validateInterfaces.Create;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
+import static ru.practicum.shareit.item.ItemController.X_SHARER_USER_ID;
+
 @Controller
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class BookingController {
     private final BookingClient bookingClient;
 
     @GetMapping
-    public ResponseEntity<Object> getUserBookings(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ResponseEntity<Object> getUserBookings(@RequestHeader(X_SHARER_USER_ID) long userId,
                                                   @RequestParam(name = "state", defaultValue = "all") String stateParam,
                                                   @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                                   @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -34,7 +36,7 @@ public class BookingController {
     }
 
     @GetMapping("/owner")
-    public ResponseEntity<Object> getOwnerBookings(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ResponseEntity<Object> getOwnerBookings(@RequestHeader(X_SHARER_USER_ID) long userId,
                                                    @RequestParam(name = "state", defaultValue = "all") String stateParam,
                                                    @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                                    @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -45,7 +47,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createBooking(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ResponseEntity<Object> createBooking(@RequestHeader(X_SHARER_USER_ID) long userId,
                                                 @RequestBody @Validated(Create.class) BookItemRequestDto requestDto) {
         if (!requestDto.getStart().isBefore(requestDto.getEnd())) {
             throw new IllegalArgumentException("Неверные временные показатели брони");
@@ -55,7 +57,7 @@ public class BookingController {
     }
 
     @GetMapping("/{bookingId}")
-    public ResponseEntity<Object> getBooking(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ResponseEntity<Object> getBooking(@RequestHeader(X_SHARER_USER_ID) long userId,
                                              @PathVariable Long bookingId) {
         log.info("Get booking {}, userId={}", bookingId, userId);
         return bookingClient.getBooking(userId, bookingId);
@@ -63,7 +65,7 @@ public class BookingController {
 
     @PatchMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> makeApprovedBooking(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ResponseEntity<Object> makeApprovedBooking(@RequestHeader(X_SHARER_USER_ID) long userId,
                                                       @PathVariable long bookingId,
                                                       @RequestParam boolean approved) {
         return bookingClient.makeApprovedBooking(userId, bookingId, approved);

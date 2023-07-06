@@ -5,15 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import ru.practicum.shareit.validateInterfaces.Create;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,8 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommentDtoTest {
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private Validator validator;
 
     @Test
     void testSerialize() throws JsonProcessingException {
@@ -49,23 +40,5 @@ public class CommentDtoTest {
         assertThat(commentDto.getText()).isEqualTo("Some text");
         assertThat(commentDto.getAuthorName()).isEqualTo("John");
         assertThat(commentDto.getCreated()).isEqualTo(LocalDateTime.parse("2023-06-22T12:05:09.700"));
-    }
-
-    @Test
-    void testValidationSuccess() {
-        CommentDto commentDto = new CommentDto();
-        commentDto.setText("Some text");
-
-        Set<ConstraintViolation<CommentDto>> violations = validator.validate(commentDto, Create.class);
-
-        assertThat(violations).isEmpty();
-    }
-
-    @Configuration
-    static class CommentDtoTestConfig {
-        @Bean
-        public Validator validator() {
-            return Validation.buildDefaultValidatorFactory().getValidator();
-        }
     }
 }

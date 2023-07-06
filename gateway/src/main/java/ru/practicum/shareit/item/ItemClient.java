@@ -47,7 +47,6 @@ public class ItemClient extends BaseClient {
         return get("", userId);
     }
 
-
     public ResponseEntity<Object> getItemsByText(String text, long userId) {
         Map<String, Object> parameters = Map.of(
                 "text", text

@@ -6,11 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.validateInterfaces.Create;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -25,14 +22,11 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @NotBlank(groups = {Create.class})
     @Column(name = "name")
     private String name;
-    @NotBlank(groups = {Create.class})
     @Column(name = "description")
     private String description;
     @BooleanFlag
-    @NotNull(groups = {Create.class})
     @Column(name = "available")
     private Boolean available;
     @Transient
